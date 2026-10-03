@@ -29,6 +29,7 @@ export default function App() {
           setCountries(
             data.filter(
               (item) =>
+                item &&
                 typeof item.name === "string" &&
                 /^[A-Z]{2}$/.test(item.countryCode),
             ),

@@ -94,3 +94,20 @@ test("loading and mobile layout", async ({ page }) => {
     ),
   ).toBe(true);
 });
+
+// A malformed API record must produce a recoverable error, not crash React.
+test("invalid regional data is rejected and retry recovers", async ({ page }) => {
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await stub(page);
+  await page.route("https://date.nager.at/api/v3/PublicHolidays/**", (route) =>
+    route.fulfill({ json: [{ date: "2026-01-01", name: "Regional day",
+      localName: "Regional day", global: false, counties: "GB-SCT" }] }),
+  );
+  await page.goto("/");
+  await expect(page.getByRole("alert")).toContainText("Some holiday data could not be read");
+  await page.unroute("https://date.nager.at/api/v3/PublicHolidays/**");
+  await page.getByRole("button", { name: "Try again" }).click();
+  await expect(page.locator(".calendar")).toBeVisible();
+  expect(errors).toEqual([]);
+});

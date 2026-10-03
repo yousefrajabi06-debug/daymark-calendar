@@ -34,12 +34,20 @@ export async function getHolidays(year, country, signal) {
   if (
     !data.every(
       (item) =>
+        item !== null &&
+        typeof item === "object" &&
         typeof item.name === "string" &&
+        typeof item.localName === "string" &&
+        typeof item.global === "boolean" &&
+        (item.counties == null ||
+          (Array.isArray(item.counties) &&
+            item.counties.every((county) => typeof county === "string"))) &&
         /^\d{4}-\d{2}-\d{2}$/.test(item.date) &&
-        !Number.isNaN(Date.parse(item.date)),
+        !Number.isNaN(Date.parse(item.date)) &&
+        new Date(item.date).toISOString().slice(0, 10) === item.date,
     )
   )
-    throw new Error("Some holiday dates could not be read.");
+    throw new Error("Some holiday data could not be read. Please try again.");
   return data.sort((a, b) => a.date.localeCompare(b.date));
 }
 export function exportCalendar(holidays, country) {
