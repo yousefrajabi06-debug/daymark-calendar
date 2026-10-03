@@ -8,7 +8,7 @@ A public-holiday explorer with a monthly calendar and downloadable calendar even
 
 [Mobile screenshot](docs/screenshots/mobile.png) · [Learning guide](docs/LEARNING.md) · [Checks](https://github.com/yousefrajabi06-debug/daymark-calendar/actions)
 
-Screenshots show the running application with public Nager.Date holiday data. They are not design mockups. This repository does not currently advertise a hosted demo.
+Screenshots show the running application with public Nager.Date holiday data. They are not design mockups. [Open the live Netlify app](https://yousef-daymark.netlify.app/).
 
 ## Why this project
 
